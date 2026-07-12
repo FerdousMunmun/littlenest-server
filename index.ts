@@ -173,7 +173,35 @@ app.get("/bookings", async (req: Request, res: Response) => {
     });
   }
 });
+app.post("/centers", async (req: Request, res: Response) => {
+  try {
+    const center = req.body;
 
+    const result = await childCareCentersCollection.insertOne(center);
+
+    res.send(result);
+  } catch (error: any) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+});
+
+app.get("/my-centers", async (req: Request, res: Response) => {
+  try {
+    const email = req.query.email as string;
+
+    const result = await childCareCentersCollection
+      .find({ ownerEmail: email })
+      .toArray();
+
+    res.send(result);
+  } catch (error: any) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+});
 
 
 app.patch("/centers/:id", verifyToken, async (req: AuthRequest, res: Response) => {
