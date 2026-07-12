@@ -108,13 +108,25 @@ async function run() {
 
 
 
-    const childCareCentersCollection = db.collection("childCareCenters");
+    const childCareCentersCollection = db.collection("childcarecenters");
 const bookingsCollection = db.collection("bookings");
 const reviewsCollection = db.collection("reviews");
 
 
 
+app.get("/centers", async (req: Request, res: Response) => {
+  try {
+    const result = await childCareCentersCollection
+      .find({})
+      .toArray();
 
+    res.send(result);
+  } catch (error: any) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+});
 
 
     
