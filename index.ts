@@ -144,6 +144,20 @@ app.get("/centers/:id", async (req: Request, res: Response) => {
   }
 });
 
+app.post("/centers", verifyToken, async (req: AuthRequest, res: Response) => {
+  try {
+    const center = req.body;
+
+    const result = await childCareCentersCollection.insertOne(center);
+
+    res.send(result);
+  } catch (error: any) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+});
+
 
     
 
