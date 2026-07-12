@@ -159,6 +159,21 @@ app.post("/centers", verifyToken, async (req: AuthRequest, res: Response) => {
 });
 
 
+
+app.patch("/centers/:id", verifyToken, async (req: AuthRequest, res: Response) => {
+  const id = req.params.id;
+
+  const result = await childCareCentersCollection.updateOne(
+    { _id: new ObjectId(id) },
+    {
+      $set: req.body,
+    }
+  );
+
+  res.send(result);
+});
+
+
     
 
     // await client.db("admin").command({ ping: 1 });
