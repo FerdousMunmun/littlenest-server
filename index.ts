@@ -174,7 +174,15 @@ app.patch("/centers/:id", verifyToken, async (req: AuthRequest, res: Response) =
 });
 
 
-    
+    app.delete("/centers/:id", verifyToken, async (req: AuthRequest, res: Response) => {
+  const id = req.params.id;
+
+  const result = await childCareCentersCollection.deleteOne({
+    _id: new ObjectId(id),
+  });
+
+  res.send(result);
+});
 
     // await client.db("admin").command({ ping: 1 });
     console.log(
