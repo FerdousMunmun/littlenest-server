@@ -110,7 +110,7 @@ async function run() {
 
     const childCareCentersCollection = db.collection("childcarecenters");
 const bookingsCollection = db.collection("bookings");
-const reviewsCollection = db.collection("reviews");
+
 
 
 
@@ -144,11 +144,27 @@ app.get("/centers/:id", async (req: Request, res: Response) => {
   }
 });
 
-app.post("/centers", verifyToken, async (req: AuthRequest, res: Response) => {
+app.post("/bookings", async (req: Request, res: Response) => {
   try {
-    const center = req.body;
+    const booking = req.body;
 
-    const result = await childCareCentersCollection.insertOne(center);
+    const result = await bookingsCollection.insertOne(booking);
+
+    res.send(result);
+  } catch (error: any) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+});
+
+app.get("/bookings", async (req: Request, res: Response) => {
+  try {
+    const email = req.query.email as string;
+
+    const query = email ? { userEmail: email } : {};
+
+    const result = await bookingsCollection.find(query).toArray();
 
     res.send(result);
   } catch (error: any) {
