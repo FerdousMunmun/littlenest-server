@@ -128,6 +128,22 @@ app.get("/centers", async (req: Request, res: Response) => {
   }
 });
 
+app.get("/centers/:id", async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+
+    const result = await childCareCentersCollection.findOne({
+      _id: new ObjectId(id),
+    });
+
+    res.send(result);
+  } catch (error: any) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+});
+
 
     
 
