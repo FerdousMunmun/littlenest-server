@@ -242,6 +242,26 @@ app.patch("/centers/:id", async (req: Request, res: Response) => {
   }
 });
 
+
+app.get("/bookings/check", async (req: Request, res: Response) => {
+  try {
+    const { userEmail, centerId } = req.query;
+
+    const booking = await bookingsCollection.findOne({
+      userEmail,
+      centerId,
+    });
+
+    res.send({
+      booked: !!booking,
+    });
+  } catch (error: any) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+});
+
     // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!",
