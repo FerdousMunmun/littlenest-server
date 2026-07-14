@@ -202,30 +202,44 @@ app.get("/my-centers", async (req: Request, res: Response) => {
     });
   }
 });
+app.patch("/centers/:id", async (req: Request, res: Response) => {
+  try {
+      console.log(req.body);
+    const id = req.params.id;
+    const updatedData = req.body;
 
+    const result = await childCareCentersCollection.updateOne(
+      { _id: new ObjectId(id) },
+      {
+        $set: updatedData,
+      }
+    );
 
-app.patch("/centers/:id", verifyToken, async (req: AuthRequest, res: Response) => {
-  const id = req.params.id;
-
-  const result = await childCareCentersCollection.updateOne(
-    { _id: new ObjectId(id) },
-    {
-      $set: req.body,
-    }
-  );
-
-  res.send(result);
+    res.send(result);
+  } catch (error: any) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
 });
 
 
-    app.delete("/centers/:id", verifyToken, async (req: AuthRequest, res: Response) => {
-  const id = req.params.id;
 
-  const result = await childCareCentersCollection.deleteOne({
-    _id: new ObjectId(id),
-  });
 
-  res.send(result);
+  app.delete("/centers/:id", async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+
+    const result = await childCareCentersCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    res.send(result);
+  } catch (error: any) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
 });
 
     // await client.db("admin").command({ ping: 1 });
