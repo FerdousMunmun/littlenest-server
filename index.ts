@@ -73,12 +73,14 @@ const verifyToken = async ( req: AuthRequest,
     return res.status(401).json({ message: "Unauthorized" });
   }
   try {
+    console.log("TOKEN =", token);
+console.log("JWKS URL =", `${process.env.CLIENT_URL}/api/auth/jwks`);
     const { payload } = await jwtVerify(token, JWKS);
     req.user = payload;
 
     next();
   } catch (error: any) {
-    console.log(error);
+        console.error(error);
 
     return res.status(403).json({
       msg: "Unauthorized"
