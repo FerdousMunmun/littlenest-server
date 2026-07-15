@@ -85,17 +85,7 @@ const verifyToken = async ( req: AuthRequest,
     });
   }
 };
-const donorVerify = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  if (req.user?.role !== "donor") {
-    return res.status(403).json({ msg: "Forbidden" });
-  }
 
-  next();
-};
 
 async function run() {
   try {
