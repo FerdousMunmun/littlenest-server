@@ -144,7 +144,7 @@ app.get("/centers/:id", async (req: Request, res: Response) => {
   }
 });
 
-app.post("/bookings", async (req: Request, res: Response) => {
+app.post("/bookings",verifyToken, async (req: Request, res: Response) => {
   try {
     const booking = req.body;
 
@@ -173,7 +173,7 @@ app.get("/bookings", async (req: Request, res: Response) => {
     });
   }
 });
-app.post("/centers", async (req: Request, res: Response) => {
+app.post("/centers",verifyToken, async (req: Request, res: Response) => {
   try {
     const center = req.body;
 
@@ -202,7 +202,7 @@ app.get("/my-centers", async (req: Request, res: Response) => {
     });
   }
 });
-app.patch("/centers/:id", async (req: Request, res: Response) => {
+app.patch("/centers/:id",verifyToken, async (req: Request, res: Response) => {
   try {
       console.log(req.body);
     const id = req.params.id;
@@ -226,7 +226,7 @@ app.patch("/centers/:id", async (req: Request, res: Response) => {
 
 
 
-  app.delete("/centers/:id", async (req: Request, res: Response) => {
+  app.delete("/centers/:id", verifyToken,async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
 
@@ -258,6 +258,30 @@ app.get("/bookings/check", async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).send({
       message: error.message,
+    });
+  }
+});
+
+app.patch("/profile/:id",verifyToken, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { name, image } = req.body;
+
+    const result = await db.collection("user").updateOne(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          name,
+          image,
+        },
+      }
+    );
+
+    res.send(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      message: "Profile update failed",
     });
   }
 });
