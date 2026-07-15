@@ -24,7 +24,7 @@ interface AuthRequest extends Request {
 
 dontenv.config();
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 app.use(cors())
@@ -269,7 +269,8 @@ app.patch("/profile/:id",verifyToken, async (req: Request, res: Response) => {
 
     res.send(result);
   } catch (error) {
-    console.error(error);
+     console.error("PROFILE UPDATE ERROR:", error);
+
     res.status(500).send({
       message: "Profile update failed",
     });
